@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Layout as AntLayout } from 'antd';
+import { GoogleMap } from "./GoogleMap";
 
 const { Header, Content, Footer: AntFooter } = AntLayout;
 
@@ -9,7 +10,9 @@ export function Page() {
       <Header>
         <Logo>Wikipedia Map</Logo>
       </Header>
-      <Inner />
+      <Inner>
+        <GoogleMap />
+      </Inner>
       <Footer style={ { textAlign: 'center' } }>Ant Design ©2018 Created by Ant UED</Footer>
     </Layout>
   );
@@ -21,7 +24,6 @@ const Layout = styled(AntLayout)`
 
 const Inner = styled(Content)`
   min-height: 280px;
-  padding: 24px;
   background: #fff;
 `;
 
