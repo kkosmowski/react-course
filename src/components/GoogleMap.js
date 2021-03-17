@@ -1,6 +1,5 @@
 import GoogleMapReact from 'google-map-react';
 import styled from 'styled-components';
-import { useEffect } from 'react';
 import { emit } from '../pages/map/mediator';
 
 const gdanskPosition = {
