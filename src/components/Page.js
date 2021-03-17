@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Layout as AntLayout } from 'antd';
-import { GoogleMap } from "./GoogleMap";
+import { GoogleMap } from './GoogleMap';
 
 const { Header, Content, Footer: AntFooter } = AntLayout;
 
@@ -17,6 +17,7 @@ export function Page() {
     </Layout>
   );
 }
+
 
 const Layout = styled(AntLayout)`
   height: 100vh;
