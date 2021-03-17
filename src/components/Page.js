@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Layout as AntLayout } from 'antd';
 import { GoogleMap } from './GoogleMap';
 
-const { Header, Content, Footer: AntFooter } = AntLayout;
+const { Header, Content } = AntLayout;
 
 export function Page() {
   return (
@@ -29,8 +29,4 @@ const Inner = styled(Content)`
 
 const Logo = styled.div`
   color: #fff;
-`;
-
-const Footer = styled(AntFooter)`
-  text-align: center;
 `;

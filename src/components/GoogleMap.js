@@ -1,7 +1,7 @@
 import GoogleMapReact from 'google-map-react';
 import styled from 'styled-components';
-import WikipediaAPI from '../services/api/wikipedia';
 import { useEffect } from 'react';
+import { emit } from '../pages/map/mediator';
 
 const gdanskPosition = {
   lat: 54.3478088,
@@ -11,18 +11,9 @@ const gdanskPosition = {
 const defaultZoom = 11;
 
 export function GoogleMap() {
-  useEffect(() => {
-    async function fetchArticles() {
-      const articles = await WikipediaAPI.getArticles({
-        coords: gdanskPosition,
-        radius: 10000,
-        limit: 10,
-      });
-      console.log(articles);
-    }
-
-    fetchArticles();
-  }, []);
+  // useEffect(() => {
+  //   emit('mapLoaded', gdanskPosition);
+  // }, [])
 
   return (
     <MapsWrapper>
@@ -30,6 +21,7 @@ export function GoogleMap() {
         bootstrapURLKeys={ { key: process.env.REACT_APP_GOOGLE_API_KEY } }
         defaultCenter={ gdanskPosition }
         defaultZoom={ defaultZoom }
+        onChange={ event => emit('mapDragged', event.center) }
       >
       </GoogleMapReact>
     </MapsWrapper>
