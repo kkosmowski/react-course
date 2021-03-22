@@ -8,7 +8,7 @@ const client = ky.create({
 });
 
 const WikipediaAPI = {
-  getArticles({ coords, radius = 10000, limit = 10 } = {}) {
+  getArticles({ coords, radius = 10000, limit = 100 } = {}) {
     const params = {
       action: 'query',
       list: 'geosearch',

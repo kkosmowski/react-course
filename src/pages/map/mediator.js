@@ -1,4 +1,5 @@
 import WikipediaAPI from '../../services/api/wikipedia';
+import { useMapStore } from './store';
 
 const listeners = {};
 
@@ -12,26 +13,27 @@ function attachListener(eventName, listener) {
   listeners[eventName] = listener;
 }
 
-function useMapMediator() {
-  async function mapDragged(center) {
-    console.log('useMapMediator map dragged', center);
+function mapWikipediaArticlesToMarkers(articles) {
+  return articles.map(({ lat, lon, pageid }) => ({
+    lat,
+    lng: lon,
+    pageId: pageid,
+  }));
+}
 
-    const articles = await WikipediaAPI.getArticles({
-      coords: center,
-      radius: 10000,
-      limit: 10,
-    });
-    console.log(articles);
+function useMapMediator() {
+  const [, { addMarkers }] = useMapStore();
+
+  async function mapDragged(center) {
+    const response = await WikipediaAPI.getArticles({ coords: center });
+    const articles = mapWikipediaArticlesToMarkers(response.query.geosearch);
+    addMarkers(articles);
   }
 
   async function mapLoaded(center) {
     console.log('useMapMediator map loaded', center)
 
-    const articles = await WikipediaAPI.getArticles({
-      coords: center,
-      radius: 10000,
-      limit: 10,
-    });
+    const articles = await WikipediaAPI.getArticles({ coords: center });
     console.log(articles);
   }
 
