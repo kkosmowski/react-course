@@ -1,15 +1,14 @@
 import styled from 'styled-components';
 import { Layout as AntLayout } from 'antd';
 import { GoogleMap } from './GoogleMap';
+import { Header } from './Header';
 
-const { Header, Content } = AntLayout;
+const { Content } = AntLayout;
 
 export function Page() {
   return (
     <Layout className="layout">
-      <Header>
-        <Logo>Wikipedia Map</Logo>
-      </Header>
+      <Header />
       <Inner>
         <GoogleMap />
       </Inner>
@@ -25,8 +24,4 @@ const Layout = styled(AntLayout)`
 const Inner = styled(Content)`
   min-height: 280px;
   background: #fff;
-`;
-
-const Logo = styled.div`
-  color: #fff;
 `;

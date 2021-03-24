@@ -5,7 +5,10 @@ defaults.devtools = true;
 defaults.mutator = (currentState, producer) => produce(currentState, producer)
 
 const Store = createStore({
-  initialState: { markers: [] },
+  initialState: {
+    markers: [],
+    googleApiLoaded: false,
+  },
   actions: {
     addMarkers: markers => ({ setState, getState }) => {
       const existingMarkers = getState().markers.map(marker => marker.pageId);
@@ -13,6 +16,11 @@ const Store = createStore({
 
       setState(draft => {
         draft.markers.push(...newMarkers);
+      })
+    },
+    setGoogleApiLoaded: value => ({ setState, getState }) => {
+      setState(draft => {
+        draft.googleApiLoaded = value;
       })
     },
   },

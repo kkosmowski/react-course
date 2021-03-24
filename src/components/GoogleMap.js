@@ -14,17 +14,17 @@ const defaultZoom = 15;
 export function GoogleMap() {
   const [{ markers }] = useMapStore();
 
-  // useEffect(() => {
-  //   emit('mapLoaded', gdanskPosition);
-  // }, [])
-
   return (
     <MapsWrapper>
       <GoogleMapReact
-        bootstrapURLKeys={ { key: process.env.REACT_APP_GOOGLE_API_KEY } }
+        bootstrapURLKeys={ {
+          key: process.env.REACT_APP_GOOGLE_API_KEY,
+          libraries: ['places'],
+        } }
         defaultCenter={ gdanskPosition }
         defaultZoom={ defaultZoom }
-        onChange={ event => emit('mapDragged', event.center) }
+        onChange={ event => emit('mapViewportChanged', event.center) }
+        onGoogleApiLoaded={({ map, maps }) => emit('mapLoaded', map)}
       >
         { markers.map(marker =>
           <Marker

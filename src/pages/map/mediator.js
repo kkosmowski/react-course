@@ -2,6 +2,7 @@ import WikipediaAPI from '../../services/api/wikipedia';
 import { useMapStore } from './store';
 
 const listeners = {};
+let map;
 
 export function emit(event, ...args) {
   console.log(event, args);
@@ -22,23 +23,31 @@ function mapWikipediaArticlesToMarkers(articles) {
 }
 
 function useMapMediator() {
-  const [, { addMarkers }] = useMapStore();
+  const [, { addMarkers, setGoogleApiLoaded }] = useMapStore();
 
-  async function mapDragged(center) {
+  async function mapViewportChanged(center) {
+    console.log('useMapMediator mapViewportChanged');
     const response = await WikipediaAPI.getArticles({ coords: center });
     const articles = mapWikipediaArticlesToMarkers(response.query.geosearch);
     addMarkers(articles);
   }
 
-  async function mapLoaded(center) {
-    console.log('useMapMediator map loaded', center)
-
-    const articles = await WikipediaAPI.getArticles({ coords: center });
-    console.log(articles);
+  async function mapLoaded(mapInstance) {
+    map = mapInstance;
+    console.log('useMapMediator mapLoaded', mapInstance);
+    setGoogleApiLoaded(true);
   }
 
-  attachListener('mapDragged', mapDragged);
+  async function searchBoxPlacesSelected(location) {
+    console.log('useMapMediator searchBoxPlacesSelected', location);
+    map.setCenter(location);
+    // TODO: Set zoom to default level
+    // map.setZoom(15);
+  }
+
+  attachListener('mapViewportChanged', mapViewportChanged);
   attachListener('mapLoaded', mapLoaded);
+  attachListener('searchBoxPlacesSelected', searchBoxPlacesSelected);
 }
 
 export function MapMediator() {
