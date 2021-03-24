@@ -24,7 +24,7 @@ function mapWikipediaArticlesToMarkers(articles) {
 }
 
 function useMapMediator() {
-  const [, { addMarkers, setGoogleApiLoaded }] = useMapStore();
+  const [, { addMarkers, setGoogleApiLoaded, setModalVisible, setCurrentArticle }] = useMapStore();
 
   async function mapViewportChanged(center) {
     console.log('useMapMediator mapViewportChanged');
@@ -33,22 +33,35 @@ function useMapMediator() {
     addMarkers(articles);
   }
 
-  async function mapLoaded(mapInstance) {
+  function mapLoaded(mapInstance) {
     map = mapInstance;
     console.log('useMapMediator mapLoaded', mapInstance);
     setGoogleApiLoaded(true);
   }
 
-  async function searchBoxPlacesSelected(location) {
+  function searchBoxPlacesSelected(location) {
     console.log('useMapMediator searchBoxPlacesSelected', location);
     map.setCenter(location);
     // TODO: Set zoom to default level
     // map.setZoom(15);
   }
 
+  async function markerClicked(title) {
+    const { query: { pages } } = await WikipediaAPI.getArticle({ title });
+    const article = Object.values(pages)[0];
+
+    setCurrentArticle({
+      url: article.fullurl,
+      title,
+    })
+    setModalVisible(true);
+  }
+
+
   attachListener('mapViewportChanged', mapViewportChanged);
   attachListener('mapLoaded', mapLoaded);
   attachListener('searchBoxPlacesSelected', searchBoxPlacesSelected);
+  attachListener('markerClicked', markerClicked);
 }
 
 export function MapMediator() {

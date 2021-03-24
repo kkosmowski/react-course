@@ -32,6 +32,7 @@ export function GoogleMap() {
             lat={ marker.lat }
             lng={ marker.lng }
             title={ marker.title }
+            onClick={ () => emit('markerClicked', marker.title) }
           />)
         }
       </GoogleMapReact>

@@ -8,6 +8,8 @@ const Store = createStore({
   initialState: {
     markers: [],
     googleApiLoaded: false,
+    modalVisible: false,
+    currentArticle: null,
   },
   actions: {
     addMarkers: markers => ({ setState, getState }) => {
@@ -21,6 +23,24 @@ const Store = createStore({
     setGoogleApiLoaded: value => ({ setState, getState }) => {
       setState(draft => {
         draft.googleApiLoaded = value;
+      })
+    },
+    setModalVisible: value => ({ setState, getState }) => {
+      setState(draft => {
+        draft.modalVisible = value;
+      })
+    },
+    setCurrentArticle: value => ({ setState, getState }) => {
+      setState(draft => {
+        draft.currentArticle = {
+          url: value.url,
+          title: value.title,
+        };
+      })
+    },
+    clearCurrentArticle: () => ({ setState, getState }) => {
+      setState(draft => {
+        draft.currentArticle = { url: '', title: '' };
       })
     },
   },

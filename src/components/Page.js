@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Layout as AntLayout } from 'antd';
 import { GoogleMap } from './GoogleMap';
 import { Header } from './Header';
+import ArticleModal from './ArticleModal';
 
 const { Content } = AntLayout;
 
@@ -10,6 +11,7 @@ export function Page() {
     <Layout className="layout">
       <Header />
       <Inner>
+        <ArticleModal />
         <GoogleMap />
       </Inner>
     </Layout>

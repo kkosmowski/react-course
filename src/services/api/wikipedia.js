@@ -31,6 +31,28 @@ const WikipediaAPI = {
         }
       }
     ).json();
+  },
+  getArticle({ title }) {
+    const params = {
+      action: 'query',
+      format: 'json',
+      titles: title,
+      prop: 'info',
+      inprop: 'url',
+      origin: '*',
+    }
+
+    if (!title) {
+      console.error('Wikipedia API: no title passed to getArticle');
+    }
+
+    return client
+      .get('api.php?', {
+        searchParams: {
+          ...params
+        }
+      })
+      .json();
   }
 }
 
