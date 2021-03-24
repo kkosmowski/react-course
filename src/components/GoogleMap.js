@@ -24,13 +24,14 @@ export function GoogleMap() {
         defaultCenter={ gdanskPosition }
         defaultZoom={ defaultZoom }
         onChange={ event => emit('mapViewportChanged', event.center) }
-        onGoogleApiLoaded={({ map, maps }) => emit('mapLoaded', map)}
+        onGoogleApiLoaded={ ({ map, maps }) => emit('mapLoaded', map) }
       >
         { markers.map(marker =>
           <Marker
             key={ marker.pageId }
             lat={ marker.lat }
             lng={ marker.lng }
+            title={ marker.title }
           />)
         }
       </GoogleMapReact>
