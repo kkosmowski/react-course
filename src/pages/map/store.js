@@ -43,6 +43,11 @@ const Store = createStore({
         draft.currentArticle = { url: '', title: '' };
       })
     },
+    setMarkerColor: (title, color) => ({ setState, getState }) => {
+      setState(draft => {
+        draft.markers.find(marker => marker.title === title).color = color;
+      })
+    },
   },
 });
 

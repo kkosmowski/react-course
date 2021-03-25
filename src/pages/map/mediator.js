@@ -1,8 +1,12 @@
 import WikipediaAPI from '../../services/api/wikipedia';
 import { useMapStore } from './store';
+import ArticlesDatabase from '../../services/ArticlesDatabase';
 
 const listeners = {};
 let map;
+
+const defaultArticleColor = 'orange';
+const readArticleColor = 'blue';
 
 export function emit(event, ...args) {
   console.log(event, args);
@@ -23,13 +27,22 @@ function mapWikipediaArticlesToMarkers(articles) {
   }));
 }
 
+function mapReadArticles(articles) {
+  return articles.map(({ title, ...rest }) => ({
+    ...rest,
+    title,
+    color: ArticlesDatabase.isArticleRead(title) ? readArticleColor : defaultArticleColor,
+  }));
+}
+
 function useMapMediator() {
-  const [, { addMarkers, setGoogleApiLoaded, setModalVisible, setCurrentArticle }] = useMapStore();
+  const [, { addMarkers, setGoogleApiLoaded, setModalVisible, setCurrentArticle, setMarkerColor }] = useMapStore();
 
   async function mapViewportChanged(center) {
     console.log('useMapMediator mapViewportChanged');
     const response = await WikipediaAPI.getArticles({ coords: center });
-    const articles = mapWikipediaArticlesToMarkers(response.query.geosearch);
+    let articles = mapWikipediaArticlesToMarkers(response.query.geosearch);
+    articles = mapReadArticles(articles);
     addMarkers(articles);
   }
 
@@ -54,6 +67,10 @@ function useMapMediator() {
       url: article.fullurl,
       title,
     })
+    if (!ArticlesDatabase.isArticleRead(title)) {
+      ArticlesDatabase.setArticleAsRead(title);
+    }
+    setMarkerColor(title, readArticleColor);
     setModalVisible(true);
   }
 
