@@ -24,7 +24,6 @@ export function GoogleMap() {
         } }
         defaultCenter={ gdanskPosition }
         defaultZoom={ defaultZoom }
-        onChange={ event => emit('mapViewportChanged', event.center) }
         onGoogleApiLoaded={ ({ map, maps }) => emit('mapLoaded', map) }
         options={ {
           styles: mapStyles

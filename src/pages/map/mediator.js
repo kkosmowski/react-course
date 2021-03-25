@@ -1,6 +1,7 @@
 import WikipediaAPI from '../../services/api/wikipedia';
 import { useMapStore } from './store';
 import ArticlesDatabase from '../../services/ArticlesDatabase';
+import { debounce } from 'lodash';
 
 const listeners = {};
 let map;
@@ -38,9 +39,11 @@ function mapReadArticles(articles) {
 function useMapMediator() {
   const [, { addMarkers, setGoogleApiLoaded, setModalVisible, setCurrentArticle, setMarkerColor }] = useMapStore();
 
-  async function mapViewportChanged(center) {
-    console.log('useMapMediator mapViewportChanged');
-    const response = await WikipediaAPI.getArticles({ coords: center });
+  const debounceTimeInMs = 500;
+  const debouncedGetArticles = debounce(getArticlesForMapCenter, debounceTimeInMs);
+
+  async function getArticlesForMapCenter() {
+    const response = await WikipediaAPI.getArticles({ coords: map.center.toJSON() });
     let articles = mapWikipediaArticlesToMarkers(response.query.geosearch);
     articles = mapReadArticles(articles);
     addMarkers(articles);
@@ -48,6 +51,9 @@ function useMapMediator() {
 
   function mapLoaded(mapInstance) {
     map = mapInstance;
+
+    map.addListener('idle', debouncedGetArticles)
+
     console.log('useMapMediator mapLoaded', mapInstance);
     setGoogleApiLoaded(true);
   }
@@ -75,7 +81,6 @@ function useMapMediator() {
   }
 
 
-  attachListener('mapViewportChanged', mapViewportChanged);
   attachListener('mapLoaded', mapLoaded);
   attachListener('searchBoxPlacesSelected', searchBoxPlacesSelected);
   attachListener('markerClicked', markerClicked);
