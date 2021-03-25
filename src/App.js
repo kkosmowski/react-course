@@ -1,4 +1,4 @@
-import './App.css';
+import './App.less';
 import { MapPage } from './pages/map';
 
 function App() {

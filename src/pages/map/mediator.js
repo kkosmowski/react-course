@@ -6,8 +6,8 @@ import { debounce } from 'lodash';
 const listeners = {};
 let map;
 
-const defaultArticleColor = 'orange';
-const readArticleColor = 'blue';
+const defaultArticleColor = 'default';
+const readArticleColor = 'read';
 
 export function emit(event, ...args) {
   console.log(event, args);
@@ -52,7 +52,7 @@ function useMapMediator() {
   function mapLoaded(mapInstance) {
     map = mapInstance;
 
-    map.addListener('idle', debouncedGetArticles)
+    map.addListener('idle', debouncedGetArticles);
 
     console.log('useMapMediator mapLoaded', mapInstance);
     setGoogleApiLoaded(true);

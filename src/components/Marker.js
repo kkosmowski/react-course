@@ -10,12 +10,12 @@ export default function Marker({ title, onClick, color }) {
 }
 
 Marker.defaultProps = {
-  color: 'orange'
+  color: 'default'
 }
 
 const colors = {
-  orange: '#ff7b23e0',
-  blue: '#23deffe0',
+  default: '#e5c163e0',
+  read: '#23deffe0',
 };
 
 const Circle = styled.div`

@@ -1,4 +1,4 @@
-import { Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import { useMapStore } from '../pages/map/store';
 import styled from 'styled-components';
 
@@ -17,10 +17,9 @@ export default function ArticleModal() {
       footer={ null }
       width="80vw"
     >
-      <iframe
+      <FavoriteButton type="primary">Add to favorite</FavoriteButton>
+      <StyledIframe
         title={ currentArticle?.title }
-        width='100%'
-        height='100%'
         frameBorder='0'
         src={ currentArticle?.url.replace('wikipedia.org', 'm.wikipedia.org') }
       />
@@ -30,11 +29,18 @@ export default function ArticleModal() {
 
 const StyledModal = styled(Modal)`
   .ant-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     height: 80vh;
   }
+`;
 
-  .ant-modal-close {
-    top: 24px;
-    right: 40px;
-  }
+const FavoriteButton = styled(Button)`
+  margin-bottom: 16px;
+`;
+
+const StyledIframe = styled.iframe`
+  width: 100%;
+  flex: 1;
 `;

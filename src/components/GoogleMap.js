@@ -5,9 +5,9 @@ import Marker from './Marker';
 import { useMapStore } from '../pages/map/store';
 import mapStyles from './mapStyles';
 
-const gdanskPosition = {
-  lat: 54.3478088,
-  lng: 18.6598646,
+const startingPosition = {
+  lat: 52.231998,
+  lng: 20.9773951,
 };
 
 const defaultZoom = 15;
@@ -22,12 +22,10 @@ export function GoogleMap() {
           key: process.env.REACT_APP_GOOGLE_API_KEY,
           libraries: ['places'],
         } }
-        defaultCenter={ gdanskPosition }
+        defaultCenter={ startingPosition }
         defaultZoom={ defaultZoom }
         onGoogleApiLoaded={ ({ map, maps }) => emit('mapLoaded', map) }
-        options={ {
-          styles: mapStyles
-        } }
+        options={ { styles: mapStyles } }
       >
         { markers.map(marker =>
           <Marker
